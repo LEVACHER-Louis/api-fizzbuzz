@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
 )
 
@@ -29,6 +30,8 @@ func getKeysFromFile(path string) (map[string]struct{}, error) {
 }
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
+
 	flagCles := pflag.StringSliceP("key", "k", []string{}, "Clé d'API")
 	flagFichCles := pflag.String("keyfile", "", "Fichier de clés")
 	flagPort := pflag.Uint16P("port", "p", 8080, "Port exposé par l'API")
