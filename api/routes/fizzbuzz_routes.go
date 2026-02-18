@@ -12,7 +12,7 @@ import (
 // paramètres :
 // - groupe : le groupe de routes où les routes seront ajoutées 
 func setupFizzbuzzRoutes(groupe *gin.RouterGroup){
-	groupe.GET("/", func(c *gin.Context){
+	groupe.GET("", func(c *gin.Context){
 		nbMaxStr := c.DefaultQuery ("nombreMax", "15")
 		nbMax, conversionOk := strconv.Atoi(nbMaxStr)
 		if conversionOk != nil {

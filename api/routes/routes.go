@@ -16,6 +16,6 @@ func SetupRoutes(r *gin.Engine, cles map[string]struct{}) {
 	fizzbuzz := r.Group("/fizzbuzz")
 	fizzbuzz.Use(middleware.AuthMiddleware(cles))
 	{
-		setupFizzbuzzRoutes(fizzbuzz.Group("/"))
+		setupFizzbuzzRoutes(fizzbuzz.Group(""))
 	}
 }
