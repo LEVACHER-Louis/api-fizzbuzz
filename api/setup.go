@@ -1,11 +1,12 @@
 package api
 
 import (
+	"api-fizzbuzz/api/routes"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupAPI(cles []string) *gin.Engine {
 	r := gin.Default()
-	setupRoutes(r, cles)
+	routes.SetupRoutes(r, cles)
 	return r
 }
