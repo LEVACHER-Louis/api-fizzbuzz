@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// setupFizzbuzzRoutes met en place les routes suivant /fizzbuzz 
+// 
+// paramètres :
+// - groupe : le groupe de routes où les routes seront ajoutées 
 func setupFizzbuzzRoutes(groupe *gin.RouterGroup){
 	groupe.GET("/", func(c *gin.Context){
 		nbMaxStr := c.DefaultQuery ("nombreMax", "15")

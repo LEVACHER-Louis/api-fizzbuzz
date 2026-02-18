@@ -1,3 +1,4 @@
+// Package middleware contenant tous les middlewares de l'API 
 package middleware
 
 import (
@@ -5,15 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AuthMiddleware(cles []string) gin.HandlerFunc {
-	ensembleCles := make(map[string]struct{})
-	for _, cle := range cles {
-		ensembleCles[cle] = struct{}{}
-	}
+// AuthMiddleware initialise le middleware vérifiant la validité des clés d'API
+//
+// paramètres : 
+// - cles : l'ensemble des clés autorisés
+//
+// retourne :
+// Le middleware bloquant les requetes non autorisés
+func AuthMiddleware(cles map[string]struct{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		cle := c.GetHeader("X-API-Key")
-		if _, existe := ensembleCles[cle]; !existe {
-			c.JSON(http.StatusUnauthorized, gin.H{"error":"clef invalide"})
+		if _, existe := cles[cle]; !existe {
+			c.JSON(http.StatusUnauthorized, gin.H{"error":"clé invalide"})
 			c.Abort()
 			return 
 		}
