@@ -3,7 +3,6 @@ package routes
 import (
 	"api-fizzbuzz/internal"
 	"net/http"
-	"strconv"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,13 +12,23 @@ import (
 // - groupe : le groupe de routes où les routes seront ajoutées 
 func setupFizzbuzzRoutes(groupe *gin.RouterGroup){
 	groupe.GET("", func(c *gin.Context){
-		nbMaxStr := c.DefaultQuery ("nombreMax", "15")
-		nbMax, conversionOk := strconv.Atoi(nbMaxStr)
-		if conversionOk != nil {
+		nbMax, err := defaultQueryUInt(c, "nombreMax", uint(15))
+		mots, err2 := getQueryMapUintString(c, "mots")
+		if err != nil || err2 != nil{
 			c.JSON(http.StatusBadRequest, gin.H{"erreur":"parametre invalide"})
 			return
 		}
-		res := internal.FizzBuzz(uint(nbMax))
+		var res string
+		if mots == nil {
+			res = internal.FizzBuzz(nbMax)
+		} else {
+			var err error
+			res, err = internal.FizzBuzzMap(nbMax, mots)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"erreur":"parametre invalide"})
+				return
+			}
+		}
 		c.JSON(http.StatusOK, gin.H{"reponse":res})
 		return
 	})
