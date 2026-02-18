@@ -1,0 +1,4 @@
+#/usr/bin/bash
+go mod download
+export GIN_MODE=release
+go build
