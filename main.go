@@ -2,12 +2,14 @@ package main
 
 import (
 	"api-fizzbuzz/api"
+	"fmt"
 
 	"github.com/spf13/pflag"
 )
 
 func main() {
 	flagCles := pflag.StringSliceP("key", "k", []string{}, "Clé d'API")
+	flagPort := pflag.Uint16P("port", "p", 8080, "Port exposé par l'API")
 
 	pflag.Parse()
 
@@ -17,5 +19,5 @@ func main() {
 	}
 
 	r := api.SetupAPI(cles)
-	r.Run(":8080")
+	r.Run(fmt.Sprintf(":%d", *flagPort))
 }
