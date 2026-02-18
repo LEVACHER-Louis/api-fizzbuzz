@@ -13,11 +13,22 @@ import (
 func setupFizzbuzzRoutes(groupe *gin.RouterGroup){
 	groupe.GET("", func(c *gin.Context){
 		nbMax, err := defaultQueryUInt(c, "nombreMax", uint(15))
-		if err != nil {
+		mots, err2 := getQueryMapUintString(c, "mots")
+		if err != nil || err2 != nil{
 			c.JSON(http.StatusBadRequest, gin.H{"erreur":"parametre invalide"})
 			return
 		}
-		res := internal.FizzBuzz(nbMax)
+		var res string
+		if mots == nil {
+			res = internal.FizzBuzz(nbMax)
+		} else {
+			var err error
+			res, err = internal.FizzBuzzMap(nbMax, mots)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"erreur":"parametre invalide"})
+				return
+			}
+		}
 		c.JSON(http.StatusOK, gin.H{"reponse":res})
 		return
 	})
